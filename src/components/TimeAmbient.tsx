@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function getTimeGradient() {
   const hour = new Date().getHours();
@@ -19,15 +19,8 @@ function getTimeMessage() {
 }
 
 export default function TimeAmbient() {
-  const [gradient, setGradient] = useState("");
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    setGradient(getTimeGradient());
-    setMessage(getTimeMessage());
-  }, []);
-
-  if (!gradient) return null;
+  const [gradient] = useState(getTimeGradient);
+  const [message] = useState(getTimeMessage);
 
   return (
     <>

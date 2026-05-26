@@ -135,11 +135,11 @@ export default function Hero() {
           ref={lineRef}
           className="mt-12 h-px bg-[var(--border)] origin-left"
         />
-        <div className="mt-8 animate-bounce opacity-30">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 5v14M5 12l7 7 7-7" />
-          </svg>
-        </div>
+      </div>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg>
       </div>
     </section>
   );

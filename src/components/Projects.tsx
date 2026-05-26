@@ -41,7 +41,7 @@ export default function Projects() {
     if (reduceMotion) return;
 
     const ctx = gsap.context(() => {
-      itemsRef.current.forEach((item, i) => {
+      itemsRef.current.forEach((item) => {
         gsap.from(item, {
           y: 60,
           opacity: 0,

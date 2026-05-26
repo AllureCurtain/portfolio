@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import Link from "next/link";
 
 export default function NotFound() {
   const numberRef = useRef<HTMLSpanElement>(null);
@@ -26,12 +27,12 @@ export default function NotFound() {
         className="mt-6 text-[var(--accent)] text-lg md:text-xl"
       >
         This page doesn&apos;t exist.{" "}
-        <a
+        <Link
           href="/"
           className="text-[var(--foreground)] underline underline-offset-4 hover:no-underline transition-all"
         >
           Go home
-        </a>
+        </Link>
       </p>
     </div>
   );

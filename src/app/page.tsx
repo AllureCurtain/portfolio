@@ -19,18 +19,22 @@ export default function Home() {
   return (
     <>
       <Loader onComplete={handleComplete} />
-      <SmoothScroll>
-        <ScrollProgress />
-        <TimeAmbient />
-        <Cursor />
-        <Nav />
-        <main>
-          <Hero />
-          <About />
-          <Projects />
-          <Contact />
-        </main>
-      </SmoothScroll>
+      <div
+        className={`transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"}`}
+      >
+        <SmoothScroll>
+          <ScrollProgress />
+          <TimeAmbient />
+          <Cursor />
+          <Nav />
+          <main>
+            <Hero />
+            <About />
+            <Projects />
+            <Contact />
+          </main>
+        </SmoothScroll>
+      </div>
     </>
   );
 }
