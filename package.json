@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "gsap": "^3.15.0",
