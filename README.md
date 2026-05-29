@@ -76,14 +76,12 @@ src/
     └── smoke-routes.mjs      Production route smoke checks
 ```
 
-## Customization
+## Content
 
-Update `src/data/site.ts` with the final name, logo text, role, production domain,
-email, social links, biography, truthful stats, and project links. Metadata,
-robots, sitemap, OG image, and visible sections all read from that file.
-
-Until real social or project URLs are configured, the UI does not render fake
-profile links or clickable project affordances.
+The public portfolio content is centralized in `src/data/site.ts`, including
+Yao's identity, canonical domain, email, GitHub profile, biography, stats, and
+selected projects. Metadata, robots, sitemap, OG image, and visible sections all
+read from that file.
 
 ## Deploy
 

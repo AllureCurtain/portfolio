@@ -38,6 +38,33 @@ test("source no longer renders fake navigation destinations", () => {
   }
 });
 
+test("site data is personalized for Yao with real portfolio content", () => {
+  const siteData = read("src/data/site.ts");
+
+  for (const expected of [
+    "Yao",
+    "https://785777.xyz",
+    "alluresocina@163.com",
+    "https://github.com/AllureCurtain",
+    "Mega",
+    "QuanXiangJia",
+    "IntelliQA",
+  ]) {
+    assert.match(siteData, new RegExp(expected), `site data should include ${expected}`);
+  }
+
+  for (const placeholder of [
+    "Portfolio Owner",
+    "Designer & Developer",
+    "Portfolio Case Study",
+    "Product Interface",
+    "Interactive Experiment",
+    "http://localhost:3000",
+  ]) {
+    assert(!siteData.includes(placeholder), `site data should not include ${placeholder}`);
+  }
+});
+
 test("viewport, cursor, and motion behavior follow accessibility constraints", () => {
   const globals = read("src/app/globals.css");
   const cursor = read("src/components/Cursor.tsx");

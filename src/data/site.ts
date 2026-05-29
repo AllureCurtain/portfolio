@@ -48,20 +48,20 @@ export type SiteConfig = {
   };
 };
 
-const baseUrl = "http://localhost:3000";
+const baseUrl = "https://785777.xyz";
 
 export const siteConfig: SiteConfig = {
   identity: {
-    name: "Portfolio Owner",
-    logo: "PO.",
-    role: "Designer & Developer",
+    name: "Yao",
+    logo: "Y.",
+    role: "Java / Rust Backend Developer",
     domain: baseUrl,
-    email: "",
+    email: "alluresocina@163.com",
   },
   seo: {
-    title: "Portfolio Owner - Designer & Developer",
+    title: "Yao - Java / Rust Backend Developer",
     description:
-      "A motion-rich portfolio for a designer and developer. Final identity, project details, and production domain are centralized here for launch updates.",
+      "Portfolio of Yao, a backend developer focused on high-concurrency Java systems, Rust infrastructure, and AI knowledge applications.",
     locale: "en_US",
   },
   nav: [
@@ -72,41 +72,49 @@ export const siteConfig: SiteConfig = {
   about: {
     label: "About",
     body:
-      "I craft digital experiences at the intersection of design and engineering. This portfolio is ready for final biography, proof points, and launch details once the real content is available.",
-    stats: [],
+      "I build high-concurrency backend systems, Rust infrastructure, and AI knowledge applications. My work spans monorepo collaboration, coupon distribution, and production LLM Q&A systems, with a focus on reliable data flow, queueing, caching, and measurable performance.",
+    stats: [
+      { value: "3.7k", label: "QPS cache-hit benchmark" },
+      { value: "2ms", label: "p95 query latency" },
+      { value: "Rust", label: "Monorepo infrastructure" },
+      { value: "CET-6", label: "English certification" },
+    ],
   },
   projects: [
     {
-      title: "Portfolio Case Study",
+      title: "Mega",
       description:
-        "A featured project slot prepared for a real case study, including optional live, source, and write-up links.",
-      tags: ["Design", "Development"],
-      year: "2026",
-      color: "#1a1a2e",
+        "Open-source monorepo collaboration infrastructure for Git, code review, and build workflows. I worked on commit history APIs, build triggers, merge queue flow, permission checks, diff rename detection, and code blame.",
+      tags: ["Rust", "Git", "Monorepo", "Cedar", "Redis"],
+      year: "2025",
+      color: "#12312b",
+      repoUrl: "https://github.com/AllureCurtain/mega",
     },
     {
-      title: "Product Interface",
+      title: "QuanXiangJia",
       description:
-        "A second work slot for a shipped interface or product system with concrete outcomes.",
-      tags: ["UI/UX", "Frontend"],
-      year: "2026",
-      color: "#16213e",
+        "High-concurrency coupon platform covering seckill claiming, distribution, settlement, search, reservation storage, and delayed reminders. The cache-hit pressure test reached about 3.7k QPS with p95 latency around 2ms.",
+      tags: ["Spring Boot", "RocketMQ", "Redis", "MySQL", "Redisson"],
+      year: "2025",
+      color: "#2b2615",
     },
     {
-      title: "Interactive Experiment",
+      title: "IntelliQA",
       description:
-        "An experimental build slot for motion, creative development, or technical exploration.",
-      tags: ["Creative Dev", "Motion"],
+        "Production LLM Q&A platform for enterprise knowledge silos, combining parallel retrieval, query understanding, distributed queue limiting, model fallback, and SSE result streaming.",
+      tags: ["Spring Boot", "Milvus", "Redis", "RAG", "SSE"],
       year: "2026",
-      color: "#0f3460",
+      color: "#1e2b4f",
     },
   ],
-  socialLinks: [],
+  socialLinks: [
+    { label: "GitHub", href: "https://github.com/AllureCurtain" },
+  ],
   contact: {
     label: "Contact",
-    heading: "Let's work together",
-    availability: ["Available for work", "Open to collaboration"],
-    footerNote: "Built with care",
+    heading: "Build reliable systems with me",
+    availability: ["Open to backend roles", "Available for collaboration"],
+    footerNote: "Yao - 785777.xyz",
   },
 };
 
