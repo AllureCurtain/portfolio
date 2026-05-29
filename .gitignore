@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/artifacts/
 
 # next.js
 /.next/
@@ -23,6 +24,7 @@
 # misc
 .DS_Store
 *.pem
+/.chrome-*/
 
 # debug
 npm-debug.log*

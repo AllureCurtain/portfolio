@@ -26,6 +26,8 @@ A minimal, motion-rich personal portfolio built with Next.js 16, GSAP, and Tailw
 - 404 page, sitemap, robots.txt, dynamic OG image
 - Reduced-motion fallbacks
 - Keyboard-accessible focus states
+- Centralized site data in `src/data/site.ts`
+- Route smoke checks for production verification
 
 ## Getting started
 
@@ -41,6 +43,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ```bash
 npm run build
 npm run start
+npm run smoke
 ```
 
 ## Project structure
@@ -56,7 +59,7 @@ src/
 │   ├── opengraph-image.tsx   Dynamic OG image
 │   ├── sitemap.ts            sitemap.xml
 │   └── robots.ts             robots.txt
-└── components/
+├── components/
     ├── SmoothScroll.tsx      Lenis + GSAP ticker
     ├── Loader.tsx            Entry counter animation
     ├── Nav.tsx               Magnetic links + scroll hide
@@ -66,21 +69,21 @@ src/
     ├── Hero.tsx              Title with char physics
     ├── About.tsx             Scroll-driven word reveal + stats
     ├── Projects.tsx          Project list with hover preview
-    └── Contact.tsx           Heading + links + marquee
+│   └── Contact.tsx           Heading + links + marquee
+├── data/
+│   └── site.ts               Identity, SEO, projects, contact data
+└── scripts/
+    └── smoke-routes.mjs      Production route smoke checks
 ```
 
 ## Customization
 
-Replace placeholder content in:
+Update `src/data/site.ts` with the final name, logo text, role, production domain,
+email, social links, biography, truthful stats, and project links. Metadata,
+robots, sitemap, OG image, and visible sections all read from that file.
 
-- `src/app/layout.tsx` — site title, description, domain
-- `src/app/sitemap.ts` and `src/app/robots.ts` — domain
-- `src/app/opengraph-image.tsx` — name and tagline
-- `src/components/Hero.tsx` — name and tagline
-- `src/components/About.tsx` — bio and stats
-- `src/components/Projects.tsx` — project list
-- `src/components/Contact.tsx` — email and social links
-- `src/components/Nav.tsx` — logo
+Until real social or project URLs are configured, the UI does not render fake
+profile links or clickable project affordances.
 
 ## Deploy
 

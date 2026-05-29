@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
+import { siteConfig } from "../data/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://yourname.com";
-
   return [
     {
-      url: baseUrl,
+      url: siteConfig.identity.domain,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,

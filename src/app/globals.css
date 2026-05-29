@@ -33,7 +33,7 @@ body {
 
 ::selection {
   background: #fff;
-  color: #000;
+  color: #0a0a0a;
 }
 
 body::after {
@@ -61,7 +61,7 @@ body::after {
 }
 
 section {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   padding: 6rem 2rem;
@@ -101,13 +101,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-}
-
-/* Hide system cursor on desktop (custom cursor replaces it) */
-@media (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
 }
 
 /* Scrollbar styling */

@@ -4,10 +4,16 @@ import { useState } from "react";
 
 function getTimeGradient() {
   const hour = new Date().getHours();
-  if (hour >= 6 && hour < 12) return "radial-gradient(ellipse at 80% 20%, rgba(255,240,220,0.03) 0%, transparent 60%)";
-  if (hour >= 12 && hour < 18) return "radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.02) 0%, transparent 60%)";
-  if (hour >= 18 && hour < 22) return "radial-gradient(ellipse at 20% 80%, rgba(255,180,100,0.04) 0%, transparent 60%)";
-  return "radial-gradient(ellipse at 50% 50%, rgba(100,130,255,0.03) 0%, transparent 60%)";
+  if (hour >= 6 && hour < 12) {
+    return "linear-gradient(135deg, rgba(255,240,220,0.03) 0%, transparent 45%)";
+  }
+  if (hour >= 12 && hour < 18) {
+    return "linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 45%)";
+  }
+  if (hour >= 18 && hour < 22) {
+    return "linear-gradient(135deg, rgba(255,180,100,0.04) 0%, transparent 45%)";
+  }
+  return "linear-gradient(135deg, rgba(100,130,255,0.03) 0%, transparent 45%)";
 }
 
 function getTimeMessage() {

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { siteConfig, siteUrl } from "../data/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,23 +19,20 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Your Name — Designer & Developer",
-  description:
-    "Personal portfolio of Your Name. Crafting digital experiences at the intersection of design and engineering.",
-  metadataBase: new URL("https://yourname.com"),
+  title: siteConfig.seo.title,
+  description: siteConfig.seo.description,
+  metadataBase: siteUrl,
   openGraph: {
-    title: "Your Name — Designer & Developer",
-    description:
-      "Personal portfolio of Your Name. Crafting digital experiences at the intersection of design and engineering.",
+    title: siteConfig.seo.title,
+    description: siteConfig.seo.description,
     type: "website",
-    locale: "en_US",
-    url: "https://yourname.com",
+    locale: siteConfig.seo.locale,
+    url: siteConfig.identity.domain,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your Name — Designer & Developer",
-    description:
-      "Personal portfolio of Your Name. Crafting digital experiences at the intersection of design and engineering.",
+    title: siteConfig.seo.title,
+    description: siteConfig.seo.description,
   },
   robots: {
     index: true,

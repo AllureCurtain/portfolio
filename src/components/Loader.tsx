@@ -9,6 +9,22 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const container = containerRef.current;
+
+    if (reduceMotion) {
+      if (counterRef.current) {
+        counterRef.current.textContent = "100";
+      }
+
+      const timeout = window.setTimeout(() => {
+        setDone(true);
+        onComplete();
+      }, 50);
+
+      return () => window.clearTimeout(timeout);
+    }
+
     const counter = { value: 0 };
     const tl = gsap.timeline({
       onComplete: () => {
@@ -34,12 +50,18 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
         }
       },
     });
+
+    return () => {
+      tl.kill();
+      gsap.killTweensOf(container);
+    };
   }, [onComplete]);
 
   if (done) return null;
 
   return (
     <div
+      data-loader
       ref={containerRef}
       className="fixed inset-0 z-[9999] bg-[var(--background)] flex items-end justify-between px-6 md:px-12 pb-8"
     >

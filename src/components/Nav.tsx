@@ -3,22 +3,18 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { siteConfig } from "../data/site";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const navItems = [
-  { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
-  { label: "Contact", href: "#contact" },
-];
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const nav = navRef.current;
     let lastScroll = 0;
 
-    ScrollTrigger.create({
+    const trigger = ScrollTrigger.create({
       trigger: document.body,
       start: "top top",
       end: "bottom bottom",
@@ -27,16 +23,21 @@ export default function Nav() {
         const scroll = self.scroll();
 
         if (scroll < 100) {
-          gsap.to(navRef.current, { yPercent: 0, duration: 0.4 });
+          gsap.to(nav, { yPercent: 0, duration: 0.4 });
         } else if (direction === 1 && scroll > lastScroll) {
-          gsap.to(navRef.current, { yPercent: -100, duration: 0.4, ease: "power2.inOut" });
+          gsap.to(nav, { yPercent: -100, duration: 0.4, ease: "power2.inOut" });
         } else if (direction === -1) {
-          gsap.to(navRef.current, { yPercent: 0, duration: 0.4, ease: "power2.inOut" });
+          gsap.to(nav, { yPercent: 0, duration: 0.4, ease: "power2.inOut" });
         }
 
         lastScroll = scroll;
       },
     });
+
+    return () => {
+      trigger.kill();
+      gsap.killTweensOf(nav);
+    };
   }, []);
 
   return (
@@ -44,12 +45,12 @@ export default function Nav() {
       ref={navRef}
       className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-[var(--background)]/70 border-b border-[var(--border)]/50"
     >
-      <div className="max-w-[90rem] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
+      <div className="max-w-[90rem] mx-auto px-4 md:px-12 py-5 flex justify-between items-center gap-4">
         <a href="#home" className="text-sm font-medium tracking-wide">
-          YN.
+          {siteConfig.identity.logo}
         </a>
-        <div className="flex gap-8">
-          {navItems.map((item) => (
+        <div className="flex gap-5 md:gap-8">
+          {siteConfig.nav.map((item) => (
             <MagneticLink key={item.label} href={item.href}>
               {item.label}
             </MagneticLink>

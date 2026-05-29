@@ -1,37 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
 export default function Cursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<MutationObserver | null>(null);
+  const [enabled, setEnabled] = useState(false);
 
-  const bindHoverTargets = useCallback(() => {
-    const follower = followerRef.current;
-    if (!follower) return;
+  useEffect(() => {
+    const query = window.matchMedia(
+      "(pointer: fine) and (prefers-reduced-motion: no-preference)"
+    );
 
-    const handleEnter = () => {
-      gsap.to(follower, { scale: 2.5, opacity: 0.5, duration: 0.3 });
-    };
-    const handleLeave = () => {
-      gsap.to(follower, { scale: 1, opacity: 1, duration: 0.3 });
-    };
+    const updateEnabled = () => setEnabled(query.matches);
 
-    const links = document.querySelectorAll("a, button, [data-hover]");
-    links.forEach((link) => {
-      if (!(link as HTMLElement).dataset.cursorBound) {
-        link.addEventListener("mouseenter", handleEnter);
-        link.addEventListener("mouseleave", handleLeave);
-        (link as HTMLElement).dataset.cursorBound = "1";
-      }
-    });
+    updateEnabled();
+    query.addEventListener("change", updateEnabled);
+
+    return () => query.removeEventListener("change", updateEnabled);
   }, []);
 
   useEffect(() => {
-    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
-    if (isTouchDevice) return;
+    if (!enabled) return;
 
     const cursor = cursorRef.current!;
     const follower = followerRef.current!;
@@ -43,19 +34,31 @@ export default function Cursor() {
       gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.4, overwrite: true });
     };
 
-    window.addEventListener("mousemove", moveCursor);
-    bindHoverTargets();
+    const handlePointerOver = (event: PointerEvent) => {
+      if ((event.target as Element | null)?.closest("a, button, [data-hover]")) {
+        gsap.to(follower, { scale: 2.5, opacity: 0.5, duration: 0.3 });
+      }
+    };
 
-    observerRef.current = new MutationObserver(() => {
-      bindHoverTargets();
-    });
-    observerRef.current.observe(document.body, { childList: true, subtree: true });
+    const handlePointerOut = (event: PointerEvent) => {
+      if ((event.target as Element | null)?.closest("a, button, [data-hover]")) {
+        gsap.to(follower, { scale: 1, opacity: 1, duration: 0.3 });
+      }
+    };
+
+    window.addEventListener("mousemove", moveCursor, { passive: true });
+    document.addEventListener("pointerover", handlePointerOver, { passive: true });
+    document.addEventListener("pointerout", handlePointerOut, { passive: true });
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
-      observerRef.current?.disconnect();
+      document.removeEventListener("pointerover", handlePointerOver);
+      document.removeEventListener("pointerout", handlePointerOut);
+      gsap.killTweensOf([cursor, follower]);
     };
-  }, [bindHoverTargets]);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <>

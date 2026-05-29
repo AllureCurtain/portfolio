@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isExternalUrl, siteConfig } from "../data/site";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,13 +56,22 @@ export default function Contact() {
     return () => ctx.revert();
   }, []);
 
-  const heading = "Let's work together";
+  const heading = siteConfig.contact.heading;
+  const contactLinks = [
+    siteConfig.identity.email
+      ? {
+          label: siteConfig.identity.email,
+          href: `mailto:${siteConfig.identity.email}`,
+        }
+      : null,
+    ...siteConfig.socialLinks,
+  ].filter((link): link is { label: string; href: string } => Boolean(link));
 
   return (
     <section ref={sectionRef} id="contact" className="items-end pb-16 md:pb-24">
       <div className="max-w-[90rem] w-full mx-auto">
         <span className="text-[var(--accent)] text-sm uppercase tracking-[0.2em] mb-12 block">
-          Contact
+          {siteConfig.contact.label}
         </span>
         <div className="reveal-line">
           <h2
@@ -80,11 +90,18 @@ export default function Contact() {
             ))}
           </h2>
         </div>
-        <div ref={linksRef} className="mt-12 flex flex-col md:flex-row gap-8">
-          <ContactLink href="mailto:hello@yourname.com">hello@yourname.com</ContactLink>
-          <ContactLink href="#">GitHub</ContactLink>
-          <ContactLink href="#">LinkedIn</ContactLink>
-          <ContactLink href="#">Twitter</ContactLink>
+        <div
+          ref={linksRef}
+          className="mt-12 flex flex-col md:flex-row gap-8"
+          aria-hidden={contactLinks.length === 0 ? "true" : undefined}
+        >
+          {contactLinks.length > 0
+            ? contactLinks.map((link) => (
+              <ContactLink key={link.href} href={link.href}>
+                {link.label}
+              </ContactLink>
+            ))
+            : null}
         </div>
 
         {/* Marquee */}
@@ -95,10 +112,14 @@ export default function Contact() {
           >
             {Array.from({ length: 8 }).map((_, i) => (
               <span key={i} className="flex items-center gap-12 shrink-0">
-                Available for work
-                <span className="text-[var(--foreground)]">●</span>
-                Open to collaboration
-                <span className="text-[var(--foreground)]">●</span>
+                {siteConfig.contact.availability[0]}
+                <span className="text-[var(--foreground)]" aria-hidden="true">
+                  /
+                </span>
+                {siteConfig.contact.availability[1]}
+                <span className="text-[var(--foreground)]" aria-hidden="true">
+                  /
+                </span>
               </span>
             ))}
           </div>
@@ -108,7 +129,9 @@ export default function Contact() {
           <span className="text-sm text-[var(--accent)]">
             &copy; {new Date().getFullYear()}
           </span>
-          <span className="text-sm text-[var(--accent)]">Built with care</span>
+          <span className="text-sm text-[var(--accent)]">
+            {siteConfig.contact.footerNote}
+          </span>
         </div>
       </div>
     </section>
@@ -122,6 +145,8 @@ function ContactLink({ href, children }: { href: string; children: React.ReactNo
     <a
       ref={ref}
       href={href}
+      target={isExternalUrl(href) ? "_blank" : undefined}
+      rel={isExternalUrl(href) ? "noreferrer" : undefined}
       className="group relative text-lg overflow-hidden inline-block"
     >
       <span className="block transition-transform duration-500 ease-out group-hover:-translate-y-full text-[var(--accent)]">

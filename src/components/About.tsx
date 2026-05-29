@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { siteConfig } from "../data/site";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,8 +66,7 @@ export default function About() {
     return () => ctx.revert();
   }, []);
 
-  const text =
-    "I craft digital experiences at the intersection of design and engineering. Focused on creating things that are both beautiful and functional. Every pixel matters, every interaction tells a story.";
+  const text = siteConfig.about.body;
 
   return (
     <section ref={sectionRef} id="about" className="items-start pt-32 md:pt-48">
@@ -75,7 +75,7 @@ export default function About() {
           ref={labelRef}
           className="text-[var(--accent)] text-sm uppercase tracking-[0.2em] mb-12 block"
         >
-          About
+          {siteConfig.about.label}
         </span>
         <p
           ref={textRef}
@@ -87,12 +87,13 @@ export default function About() {
             </span>
           ))}
         </p>
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
-          <Stat number="5+" label="Years Experience" />
-          <Stat number="30+" label="Projects Completed" />
-          <Stat number="10+" label="Happy Clients" />
-          <Stat number="∞" label="Cups of Coffee" />
-        </div>
+        {siteConfig.about.stats.length > 0 ? (
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+            {siteConfig.about.stats.map((stat) => (
+              <Stat key={stat.label} number={stat.value} label={stat.label} />
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   );

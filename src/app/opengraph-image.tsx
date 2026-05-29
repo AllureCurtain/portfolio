@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
+import { siteConfig } from "../data/site";
 
-export const runtime = "edge";
-export const alt = "Your Name — Designer & Developer";
+export const alt = siteConfig.seo.title;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -28,7 +28,7 @@ export default async function Image() {
             lineHeight: 0.9,
           }}
         >
-          Your Name
+          {siteConfig.identity.name}
         </div>
         <div
           style={{
@@ -38,7 +38,7 @@ export default async function Image() {
             letterSpacing: "0.05em",
           }}
         >
-          Designer & Developer
+          {siteConfig.identity.role}
         </div>
       </div>
     ),

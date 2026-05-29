@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { siteConfig } from "../data/site";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +16,11 @@ export default function Hero() {
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canUsePointerEffect = window.matchMedia(
+      "(pointer: fine) and (min-width: 768px)"
+    ).matches;
+    let frameId = 0;
+    let latestPointer: MouseEvent | null = null;
 
     const ctx = gsap.context(() => {
       const chars = titleRef.current!.querySelectorAll(".char");
@@ -60,8 +66,7 @@ export default function Hero() {
         },
       });
 
-      // Character scatter on mouse proximity
-      const handleMove = (e: MouseEvent) => {
+      const updateCharacters = (e: MouseEvent) => {
         chars.forEach((char) => {
           const rect = (char as HTMLElement).getBoundingClientRect();
           const cx = rect.left + rect.width / 2;
@@ -92,14 +97,36 @@ export default function Hero() {
         });
       };
 
-      window.addEventListener("mousemove", handleMove);
-      return () => window.removeEventListener("mousemove", handleMove);
+      if (!canUsePointerEffect) {
+        return;
+      }
+
+      // Character scatter on mouse proximity
+      const handleMove = (e: MouseEvent) => {
+        latestPointer = e;
+
+        if (frameId) return;
+
+        frameId = requestAnimationFrame(() => {
+          frameId = 0;
+          if (latestPointer) updateCharacters(latestPointer);
+        });
+      };
+
+      window.addEventListener("mousemove", handleMove, { passive: true });
+      return () => {
+        window.removeEventListener("mousemove", handleMove);
+        if (frameId) cancelAnimationFrame(frameId);
+      };
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      if (frameId) cancelAnimationFrame(frameId);
+    };
   }, []);
 
-  const title = "Your Name";
+  const title = siteConfig.identity.name;
 
   return (
     <section
@@ -129,7 +156,7 @@ export default function Hero() {
           ref={subtitleRef}
           className="mt-6 text-[var(--accent)] text-lg md:text-xl font-light tracking-wide"
         >
-          Designer & Developer
+          {siteConfig.identity.role}
         </p>
         <div
           ref={lineRef}
