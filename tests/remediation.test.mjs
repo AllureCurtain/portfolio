@@ -26,7 +26,7 @@ test("site data is centralized and metadata routes read from it", () => {
 test("source no longer renders fake navigation destinations", () => {
   const files = [
     "src/components/Contact.tsx",
-    "src/components/Projects.tsx",
+    "src/components/ProjectBriefs.tsx",
     "src/data/site.ts",
   ];
 
@@ -65,18 +65,32 @@ test("site data is personalized for Yao with real portfolio content", () => {
   }
 });
 
+test("home page is refocused around a clear Rive-ready portfolio experience", () => {
+  const page = read("src/app/page.tsx");
+  const experience = read("src/components/HomeExperience.tsx");
+  const systemVisual = read("src/components/SystemVisual.tsx");
+  const globals = read("src/app/globals.css");
+  const pkg = read("package.json");
+
+  assert.match(page, /SystemVisual/, "home page should render the Rive-ready system visual");
+  assert.match(page, /ProjectBriefs/, "home page should render clearer project briefs");
+  assert.match(systemVisual, /@rive-app\/react-/, "SystemVisual should be wired to a Rive React runtime");
+  assert.match(systemVisual, /\/rive\/portfolio-system\.riv/, "SystemVisual should look for the portfolio Rive file");
+  assert.match(systemVisual, /fallback-system-visual/, "SystemVisual should provide a nonblank fallback");
+  assert.match(pkg, /@rive-app\/react-/, "package.json should include a Rive React runtime dependency");
+  assert(!experience.includes("<Loader"), "home experience should not hide content behind the loader");
+  assert(!experience.includes("<Cursor"), "home experience should not use a custom cursor");
+  assert(!globals.includes("cursor: none"), "global CSS should not hide the native cursor");
+});
+
 test("viewport, cursor, and motion behavior follow accessibility constraints", () => {
   const globals = read("src/app/globals.css");
-  const cursor = read("src/components/Cursor.tsx");
-  const hero = read("src/components/Hero.tsx");
-  const loader = read("src/components/Loader.tsx");
+  const systemVisual = read("src/components/SystemVisual.tsx");
   const nav = read("src/components/Nav.tsx");
 
   assert(!globals.includes("min-height: 100vh"), "global section height should not use 100vh");
-  assert.match(globals, /100dvh/, "global full-height sections should use dynamic viewport units");
+  assert(!globals.includes("h-screen"), "global layout should not use fixed viewport-height utilities");
   assert(!globals.includes("cursor: none !important"), "CSS should not globally hide the native cursor");
-  assert.match(cursor, /prefers-reduced-motion/, "custom cursor should disable itself for reduced motion");
-  assert.match(hero, /requestAnimationFrame/, "hero mousemove effect should be frame-throttled");
-  assert.match(loader, /prefers-reduced-motion/, "loader should respect reduced motion");
+  assert.match(systemVisual, /prefers-reduced-motion/, "system visual should provide reduced-motion handling");
   assert.match(nav, /\.kill\(\)/, "navigation ScrollTrigger should be killed during cleanup");
 });

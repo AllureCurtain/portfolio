@@ -1,160 +1,53 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { isExternalUrl, siteConfig } from "../data/site";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function Contact() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const linksRef = useRef<HTMLDivElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) return;
-
-    const ctx = gsap.context(() => {
-      const chars = headingRef.current!.querySelectorAll(".contact-char");
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      tl.from(chars, {
-        yPercent: 110,
-        opacity: 0,
-        rotation: 8,
-        duration: 1.2,
-        stagger: 0.03,
-        ease: "power4.out",
-      }).from(
-        linksRef.current,
-        { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" },
-        "-=0.6"
-      );
-
-      // Infinite marquee
-      if (marqueeRef.current) {
-        const marqueeWidth = marqueeRef.current.scrollWidth / 2;
-        gsap.to(marqueeRef.current, {
-          x: -marqueeWidth,
-          duration: 20,
-          ease: "none",
-          repeat: -1,
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const heading = siteConfig.contact.heading;
   const contactLinks = [
-    siteConfig.identity.email
-      ? {
-          label: siteConfig.identity.email,
-          href: `mailto:${siteConfig.identity.email}`,
-        }
-      : null,
+    {
+      label: siteConfig.identity.email,
+      href: `mailto:${siteConfig.identity.email}`,
+    },
     ...siteConfig.socialLinks,
-  ].filter((link): link is { label: string; href: string } => Boolean(link));
+  ];
 
   return (
-    <section ref={sectionRef} id="contact" className="items-end pb-16 md:pb-24">
-      <div className="max-w-[90rem] w-full mx-auto">
-        <span className="text-[var(--accent)] text-sm uppercase tracking-[0.2em] mb-12 block">
-          {siteConfig.contact.label}
-        </span>
-        <div className="reveal-line">
-          <h2
-            ref={headingRef}
-            className="text-[clamp(2rem,8vw,7rem)] font-light leading-[1] tracking-[-0.04em]"
-            aria-label={heading}
-          >
-            {heading.split("").map((c, i) => (
-              <span
-                key={i}
-                className="contact-char inline-block will-change-transform"
-                aria-hidden="true"
-              >
-                {c === " " ? " " : c}
-              </span>
-            ))}
-          </h2>
-        </div>
-        <div
-          ref={linksRef}
-          className="mt-12 flex flex-col md:flex-row gap-8"
-          aria-hidden={contactLinks.length === 0 ? "true" : undefined}
-        >
-          {contactLinks.length > 0
-            ? contactLinks.map((link) => (
-              <ContactLink key={link.href} href={link.href}>
-                {link.label}
-              </ContactLink>
-            ))
-            : null}
-        </div>
-
-        {/* Marquee */}
-        <div className="mt-32 overflow-hidden border-y border-[var(--border)] py-6">
-          <div
-            ref={marqueeRef}
-            className="flex whitespace-nowrap text-2xl md:text-4xl font-light tracking-[-0.02em] text-[var(--accent)] gap-12 will-change-transform"
-          >
-            {Array.from({ length: 8 }).map((_, i) => (
-              <span key={i} className="flex items-center gap-12 shrink-0">
-                {siteConfig.contact.availability[0]}
-                <span className="text-[var(--foreground)]" aria-hidden="true">
-                  /
-                </span>
-                {siteConfig.contact.availability[1]}
-                <span className="text-[var(--foreground)]" aria-hidden="true">
-                  /
-                </span>
-              </span>
-            ))}
+    <section id="contact" className="portfolio-section pb-16 md:pb-24">
+      <div className="portfolio-shell">
+        <div className="grid gap-10 border-t border-[var(--border)] pt-10 lg:grid-cols-[1fr_1fr]">
+          <div>
+            <p className="section-kicker">{siteConfig.contact.label}</p>
+            <h2 className="section-title mt-4">{siteConfig.contact.heading}</h2>
           </div>
-        </div>
-
-        <div className="mt-12 pt-8 border-t border-[var(--border)] flex justify-between items-center">
-          <span className="text-sm text-[var(--accent)]">
-            &copy; {new Date().getFullYear()}
-          </span>
-          <span className="text-sm text-[var(--accent)]">
-            {siteConfig.contact.footerNote}
-          </span>
+          <div className="flex flex-col justify-between gap-10">
+            <div className="flex flex-wrap gap-3">
+              {siteConfig.contact.availability.map((item) => (
+                <span
+                  key={item}
+                  className="border border-[var(--border)] px-4 py-2 text-sm text-[var(--accent)]"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+            <div className="flex flex-col gap-4 md:flex-row md:items-center">
+              {contactLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target={isExternalUrl(link.href) ? "_blank" : undefined}
+                  rel={isExternalUrl(link.href) ? "noreferrer" : undefined}
+                  className="break-all text-base text-[var(--foreground)] underline decoration-white/25 underline-offset-4 transition-colors hover:text-[#bfe5d9]"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <div className="flex justify-between gap-6 border-t border-[var(--border)] pt-6 text-sm text-[var(--accent)]">
+              <span>&copy; {new Date().getFullYear()}</span>
+              <span>{siteConfig.contact.footerNote}</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function ContactLink({ href, children }: { href: string; children: React.ReactNode }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-
-  return (
-    <a
-      ref={ref}
-      href={href}
-      target={isExternalUrl(href) ? "_blank" : undefined}
-      rel={isExternalUrl(href) ? "noreferrer" : undefined}
-      className="group relative text-lg overflow-hidden inline-block"
-    >
-      <span className="block transition-transform duration-500 ease-out group-hover:-translate-y-full text-[var(--accent)]">
-        {children}
-      </span>
-      <span className="absolute top-full left-0 block transition-transform duration-500 ease-out group-hover:-translate-y-full text-[var(--foreground)]">
-        {children}
-      </span>
-    </a>
   );
 }

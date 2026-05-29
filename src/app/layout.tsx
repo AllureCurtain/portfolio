@@ -1,19 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { siteConfig, siteUrl } from "../data/site";
 import "./globals.css";
 
-const inter = Inter({
+const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   preload: true,
   fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
 });
 
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+});
+
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#0c0f0e",
   width: "device-width",
   initialScale: 1,
 };
@@ -46,7 +52,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    >
       <body>{children}</body>
     </html>
   );

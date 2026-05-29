@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --accent: #888;
-  --border: #222;
+  --background: #0c0f0e;
+  --foreground: #f3f4ef;
+  --accent: #9ba39e;
+  --border: #26302c;
 }
 
 @theme inline {
@@ -32,8 +32,8 @@ body {
 }
 
 ::selection {
-  background: #fff;
-  color: #0a0a0a;
+  background: #d9f4ec;
+  color: #0c0f0e;
 }
 
 body::after {
@@ -46,30 +46,75 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-.split-char {
-  display: inline-block;
-  will-change: transform, opacity;
-}
-
-.reveal-line {
-  overflow: hidden;
-}
-
-.reveal-line > span {
-  display: inline-block;
-  will-change: transform;
-}
-
-section {
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  padding: 6rem 2rem;
+.portfolio-section {
+  padding: 6rem 1.25rem;
 }
 
 @media (min-width: 768px) {
-  section {
-    padding: 8rem 4rem;
+  .portfolio-section {
+    padding: 8rem 3rem;
+  }
+}
+
+.portfolio-shell {
+  width: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.section-kicker {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.section-title {
+  max-width: 14ch;
+  font-size: clamp(2.25rem, 5vw, 4.75rem);
+  line-height: 1.05;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+
+.system-flow {
+  stroke: #8fc5b5;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 8 16;
+  opacity: 0.48;
+  animation: system-flow 5.5s linear infinite;
+}
+
+.system-flow-b {
+  animation-delay: -1.8s;
+}
+
+.system-flow-c {
+  animation-delay: -3.4s;
+}
+
+.system-node {
+  animation: system-node-float 5s ease-in-out infinite;
+}
+
+.system-node:nth-of-type(2n) {
+  animation-delay: -1.5s;
+}
+
+@keyframes system-flow {
+  to {
+    stroke-dashoffset: -96;
+  }
+}
+
+@keyframes system-node-float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-8px);
   }
 }
 
@@ -93,6 +138,11 @@ section {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .system-flow,
+  .system-node {
+    animation: none !important;
   }
 }
 
